@@ -1,0 +1,43 @@
+AT NFS server:a
+=============
+
+Run below commands to install NFS server in Ubuntu machine.
+
+1. Create a directory at root level ( example : /mynas )
+2. sudo apt-get update
+3. sudo apt-get dist-upgrade
+4. No need to update /etc/network/interfaces
+5.  sudo apt install nfs-kernel-server  - For installing NFS server.
+6. sudo vi /etc/exports
+add entry here
+/mynas  *(rw,sync)
+
+
+7. sudo exportfs -ra  
+This command need to be run if you make any changes to /etc/exports
+
+8. To validate nfs server working 
+showmount -e
+it shows you mount point.  Then it is successful.
+
+9. Most important thing is give full permissions to the folder   
+chmod 777 /mynas
+
+10. From kuber master or worker nodes 
+
+Step 1: you have to install nfs-common tools
+
+sudo apt install nfs-common
+
+ 
+
+Run below command to validate.
+
+showmount -e nasserver  
+showmount -e we have to provide IP or hostname of Nas server.
+
+You can also try to mount NFS on worker node.
+# mount.nfs nasserver:mynas /mnt/mynas   
+Above command show be mounted successfully.  This is hard validation that means at OS level.
+
+you can start creating Persistent volume in master.
